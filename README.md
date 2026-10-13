@@ -896,5 +896,5 @@ SEHATIN adalah portal kesehatan digital yang menggabungkan edukasi, pencarian in
 
 Dengan cakupan fitur yang luas dan struktur sistem yang rapi, SEHATIN siap menjadi proyek unggulan untuk demonstrasi lomba maupun fondasi pengembangan produk kesehatan digital yang lebih besar.
 
-**SEHATIN - Sehat dimulai dari informasi yang tepat.
-by Hello, World!**
+**SEHATIN - Sehat dimulai dari informasi yang tepat.**
+**by Hello, World!**
