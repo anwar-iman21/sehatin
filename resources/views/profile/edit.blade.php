@@ -27,7 +27,8 @@
                     @method('PUT')
                     <div style="margin-bottom:1.25rem">
                         <label for="name" style="display:block;margin-bottom:.4rem;font-size:.875rem;font-weight:600;color:var(--slate-700)">Nama</label>
-                        <input id="name" type="text" name="name" value="{{ old('name', $user->name) }}" maxlength="255" required autocomplete="name" style="display:block;width:100%;padding:.7rem .85rem;border:1px solid var(--slate-200);border-radius:.55rem;background:var(--white);color:var(--slate-800);font:inherit">
+                        <input id="name" type="text" name="name" value="{{ old('name', $user->name) }}" maxlength="255" pattern="\S+(?:\s+\S+)?" title="{{ __('app.name_two_words_hint') }}" required autocomplete="name" style="display:block;width:100%;padding:.7rem .85rem;border:1px solid var(--slate-200);border-radius:.55rem;background:var(--white);color:var(--slate-800);font:inherit">
+                        <p style="margin-top:.4rem;color:var(--slate-500);font-size:.8rem">{{ __('app.name_two_words_hint') }}</p>
                     </div>
                     <div style="margin-bottom:1.5rem">
                         <label for="avatar" style="display:block;margin-bottom:.4rem;font-size:.875rem;font-weight:600;color:var(--slate-700)">Foto Profil</label>

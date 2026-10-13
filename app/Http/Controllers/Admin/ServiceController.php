@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Service;
+use App\Support\HtmlSanitizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -31,6 +32,8 @@ class ServiceController extends Controller
             'order'       => ['integer', 'min:0'],
         ]);
 
+        $validated['content'] = HtmlSanitizer::clean($validated['content'] ?? null);
+
         $validated['slug']      = Str::slug($validated['name']);
         $validated['is_active'] = $request->boolean('is_active', true);
 
@@ -55,6 +58,8 @@ class ServiceController extends Controller
             'is_active'   => ['boolean'],
             'order'       => ['integer', 'min:0'],
         ]);
+
+        $validated['content'] = HtmlSanitizer::clean($validated['content'] ?? null);
 
         $validated['is_active'] = $request->boolean('is_active');
 

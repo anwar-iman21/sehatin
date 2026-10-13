@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\HealthGuide;
+use App\Support\HtmlSanitizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -65,7 +66,7 @@ class HealthGuideController extends Controller
 
     private function validateGuide(Request $request): array
     {
-        return $request->validate([
+        $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'category' => ['required', 'in:'.implode(',', self::CATEGORIES)],
             'excerpt' => ['nullable', 'string'],
@@ -74,6 +75,10 @@ class HealthGuideController extends Controller
             'order' => ['required', 'integer', 'min:0'],
             'is_active' => ['sometimes', 'boolean'],
         ]);
+
+        $validated['content'] = HtmlSanitizer::clean($validated['content']);
+
+        return $validated;
     }
 
     private function uniqueSlug(string $title, ?HealthGuide $guide = null): string

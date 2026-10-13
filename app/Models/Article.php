@@ -21,10 +21,15 @@ class Article extends Model
         'meta_description',
         'status',
         'published_at',
+        'reviewer_name',
+        'last_reviewed_at',
+        'references_json',
     ];
 
     protected $casts = [
         'published_at' => 'datetime',
+        'last_reviewed_at' => 'date',
+        'references_json' => 'array',
     ];
 
     protected static function boot()

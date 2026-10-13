@@ -55,10 +55,13 @@
                 <div style="margin-bottom:1rem">
                     <label for="name" style="{{ $labelStyle }}">{{ __('auth.name') }}</label>
                     <input id="name" type="text" name="name" value="{{ old('name') }}" required
-                        style="{{ $errors->has('name') ? $inputStyle . ';border-color:#dc2626' : $inputStyle }}" placeholder="Nama lengkap Anda"
+                        pattern="\S+(?:\s+\S+)?" title="{{ __('app.name_two_words_hint') }}"
+                        style="{{ $errors->has('name') ? $inputStyle . ';border-color:#dc2626' : $inputStyle }}" placeholder="{{ __('auth.name_placeholder') }}"
                         aria-invalid="{{ $errors->has('name') ? 'true' : 'false' }}"
+                        @if($errors->has('name')) aria-describedby="name-error" @endif
                         onfocus="this.style.borderColor='var(--green-500)'"
                         onblur="this.style.borderColor='var(--slate-200)'">
+                    <p style="margin:.4rem 0 0;color:var(--slate-500);font-size:.8rem">{{ __('app.name_two_words_hint') }}</p>
                     @error('name')
                         <p id="name-error" role="alert" style="margin:.35rem 0 0;color:#dc2626;font-size:.8rem">{{ $message }}</p>
                     @enderror
@@ -67,8 +70,9 @@
                 <div style="margin-bottom:1rem">
                     <label for="email" style="{{ $labelStyle }}">{{ __('auth.email') }}</label>
                     <input id="email" type="email" name="email" value="{{ old('email') }}" required
-                        style="{{ $errors->has('email') ? $inputStyle . ';border-color:#dc2626' : $inputStyle }}" placeholder="nama@email.com"
+                        style="{{ $errors->has('email') ? $inputStyle . ';border-color:#dc2626' : $inputStyle }}" placeholder="{{ __('auth.email_placeholder') }}"
                         aria-invalid="{{ $errors->has('email') ? 'true' : 'false' }}"
+                        @if($errors->has('email')) aria-describedby="email-error" @endif
                         onfocus="this.style.borderColor='var(--green-500)'"
                         onblur="this.style.borderColor='var(--slate-200)'">
                     @error('email')
@@ -79,8 +83,9 @@
                 <div style="margin-bottom:1rem">
                     <label for="password" style="{{ $labelStyle }}">{{ __('auth.password') }}</label>
                     <input id="password" type="password" name="password" required
-                        style="{{ $errors->has('password') ? $inputStyle . ';border-color:#dc2626' : $inputStyle }}" placeholder="Min. 8 karakter"
+                        style="{{ $errors->has('password') ? $inputStyle . ';border-color:#dc2626' : $inputStyle }}" placeholder="{{ __('auth.password_placeholder') }}"
                         aria-invalid="{{ $errors->has('password') ? 'true' : 'false' }}"
+                        @if($errors->has('password')) aria-describedby="password-error" @endif
                         onfocus="this.style.borderColor='var(--green-500)'"
                         onblur="this.style.borderColor='var(--slate-200)'">
                     @error('password')
@@ -91,8 +96,9 @@
                 <div style="margin-bottom:1.5rem">
                     <label for="password_confirmation" style="{{ $labelStyle }}">{{ __('auth.confirm_password') }}</label>
                     <input id="password_confirmation" type="password" name="password_confirmation" required
-                        style="{{ $errors->has('password_confirmation') ? $inputStyle . ';border-color:#dc2626' : $inputStyle }}" placeholder="Ulangi kata sandi"
+                        style="{{ $errors->has('password_confirmation') ? $inputStyle . ';border-color:#dc2626' : $inputStyle }}" placeholder="{{ __('auth.password_confirmation_placeholder') }}"
                         aria-invalid="{{ $errors->has('password_confirmation') ? 'true' : 'false' }}"
+                        @if($errors->has('password_confirmation')) aria-describedby="password-confirmation-error" @endif
                         onfocus="this.style.borderColor='var(--green-500)'"
                         onblur="this.style.borderColor='var(--slate-200)'">
                     @error('password_confirmation')

@@ -14,6 +14,10 @@ class LanguageController extends Controller
 
         session(['locale' => $locale]);
 
+        if ($request->expectsJson()) {
+            return response()->json(['locale' => $locale]);
+        }
+
         return redirect()->back()->withHeaders([
             'Cache-Control' => 'no-cache, no-store',
         ]);

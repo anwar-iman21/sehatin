@@ -45,7 +45,7 @@
 </section>
 
 @push('scripts')
-<script>
+<script data-page-script>
     (() => {
         const typedText = document.querySelector('[data-hero-typed]');
         if (!typedText) return;

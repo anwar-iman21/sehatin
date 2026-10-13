@@ -25,6 +25,10 @@ return [
     'create_account' => 'Buat Akun Baru',
     'login_subtitle' => 'Masuk untuk mengakses portal kesehatan SEHATIN',
     'register_subtitle' => 'Bergabung dengan SEHATIN untuk akses penuh',
+    'name_placeholder' => 'Nama lengkap Anda',
+    'email_placeholder' => 'nama@email.com',
+    'password_placeholder' => 'Minimal 8 karakter',
+    'password_confirmation_placeholder' => 'Ulangi kata sandi',
     'session_expired' => 'Sesi formulir pendaftaran sudah kedaluwarsa. Data nama dan email tetap disimpan; silakan periksa lalu klik Daftar kembali.',
     'session_refresh_failed' => 'Koneksi sesi belum dapat diperbarui. Periksa koneksi internet lalu coba klik Daftar kembali.',
     'validation' => [

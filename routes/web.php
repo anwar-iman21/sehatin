@@ -9,6 +9,9 @@ use App\Http\Controllers\DrugController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\HealthGuideController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\HealthToolsController;
+use App\Http\Controllers\CommunityController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
@@ -20,7 +23,9 @@ use Illuminate\Support\Facades\Route;
 | Language Switcher
 |--------------------------------------------------------------------------
 */
-Route::get('/lang/{locale}', [LanguageController::class, 'switch'])->name('lang.switch');
+Route::post('/lang/{locale}', [LanguageController::class, 'switch'])
+    ->middleware('throttle:30,1')
+    ->name('lang.switch');
 
 /*
 |--------------------------------------------------------------------------
@@ -29,10 +34,10 @@ Route::get('/lang/{locale}', [LanguageController::class, 'switch'])->name('lang.
 */
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1');
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::get('/register/session', [AuthController::class, 'refreshRegisterSession'])->name('register.session');
-    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:5,1');
 
     // Google OAuth
     Route::get('/auth/google', [GoogleAuthController::class, 'redirect'])->name('auth.google');
@@ -40,6 +45,34 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+Route::get('/offline', fn () => response()->view('pages.offline'))->name('offline');
+Route::get('/cari', [SearchController::class, 'index'])->name('search.index');
+Route::get('/api/cari/saran', [SearchController::class, 'suggestions'])->name('search.suggestions');
+Route::get('/dampak-sdg', [HealthToolsController::class, 'sdg'])->name('sdg');
+Route::get('/kalkulator-bmi', [HealthToolsController::class, 'bmi'])->name('health-tools.bmi');
+Route::get('/kuis-kesehatan-mental', [HealthToolsController::class, 'mentalHealthQuiz'])->name('health-tools.mental-quiz');
+Route::get('/konsultasi', [HealthToolsController::class, 'consultation'])->name('consultation.index');
+Route::get('/komunitas', [CommunityController::class, 'index'])->name('community.index');
+Route::get('/komunitas/{thread}', [CommunityController::class, 'show'])->whereNumber('thread')->name('community.show');
+
+Route::middleware('auth')->group(function () {
+    Route::post('/api/konsultasi', [HealthToolsController::class, 'chat'])->middleware('throttle:10,1')->name('consultation.chat');
+    Route::get('/api/konsultasi/pesan', [HealthToolsController::class, 'consultationMessages'])->middleware('throttle:120,1')->name('consultation.messages');
+    Route::post('/artikel/{article}/bookmark', [ArticleController::class, 'toggleBookmark'])->name('artikel.bookmark');
+    Route::delete('/artikel/{article}/bookmark', [ArticleController::class, 'removeBookmark'])->name('artikel.bookmark.remove');
+    Route::delete('/dashboard/riwayat/{history}', function (Illuminate\Http\Request $request, App\Models\SearchHistory $history) {
+        abort_unless($history->user_id === $request->user()->id, 403);
+        $history->delete();
+        return back()->with('success', __('app.history_deleted'));
+    })->name('profile.history.destroy');
+    Route::delete('/dashboard/riwayat', function (Illuminate\Http\Request $request) {
+        $request->user()->searchHistories()->delete();
+        return back()->with('success', __('app.history_cleared'));
+    })->name('profile.history.clear');
+    Route::post('/komunitas', [CommunityController::class, 'store'])->name('community.store');
+    Route::post('/komunitas/{thread}/balasan', [CommunityController::class, 'reply'])->whereNumber('thread')->name('community.reply');
+    Route::post('/komunitas/laporkan', [CommunityController::class, 'report'])->name('community.report');
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -95,6 +128,16 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 
     Route::get('/', [Admin\DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard', [Admin\DashboardController::class, 'index']);
+    Route::get('/komunitas/moderasi', [Admin\CommunityModerationController::class, 'index'])->name('community.moderation');
+    Route::post('/komunitas/laporan/{report}/selesai', [Admin\CommunityModerationController::class, 'resolve'])->name('community.reports.resolve');
+    Route::post('/komunitas/laporan/{report}/hapus-konten', [Admin\CommunityModerationController::class, 'destroyReportedContent'])->name('community.reports.destroy-content');
+    Route::post('/komunitas/dokter/{user}/verifikasi', [Admin\CommunityModerationController::class, 'verifyDoctor'])->name('community.doctors.verify');
+    Route::get('/konsultasi', [Admin\ConsultationController::class, 'index'])->name('consultations.index');
+    Route::get('/konsultasi/pembaruan', [Admin\ConsultationController::class, 'updates'])->middleware('throttle:120,1')->name('consultations.updates');
+    Route::delete('/konsultasi/{user}', [Admin\ConsultationController::class, 'destroy'])->whereNumber('user')->name('consultations.destroy');
+    Route::get('/konsultasi/{user}/pesan', [Admin\ConsultationController::class, 'messages'])->whereNumber('user')->middleware('throttle:120,1')->name('consultations.messages');
+    Route::get('/konsultasi/{user}', [Admin\ConsultationController::class, 'show'])->whereNumber('user')->name('consultations.show');
+    Route::post('/konsultasi/{user}', [Admin\ConsultationController::class, 'reply'])->whereNumber('user')->name('consultations.reply');
 
     // Profil admin
     Route::get('/profil', [Admin\ProfileController::class, 'index'])->name('profile.index');

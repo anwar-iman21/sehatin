@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\StaticPage;
+use App\Support\HtmlSanitizer;
 use Illuminate\Http\Request;
 
 class StaticPageController extends Controller
@@ -25,6 +26,8 @@ class StaticPageController extends Controller
             'title'   => ['required', 'string', 'max:255'],
             'content' => ['required', 'string'],
         ]);
+
+        $validated['content'] = HtmlSanitizer::clean($validated['content']);
 
         $halaman->update($validated);
 

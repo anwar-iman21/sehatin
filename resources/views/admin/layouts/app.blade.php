@@ -32,7 +32,12 @@
             position:fixed;top:0;left:0;height:100vh;
             overflow-y:auto;z-index:50;
             transition:transform .25s;
+            scrollbar-width:thin;scrollbar-color:rgba(148,163,184,.48) transparent;
         }
+        .sidebar::-webkit-scrollbar{width:8px}
+        .sidebar::-webkit-scrollbar-track{background:transparent}
+        .sidebar::-webkit-scrollbar-thumb{background:rgba(148,163,184,.4);border:2px solid transparent;border-radius:999px;background-clip:content-box}
+        .sidebar::-webkit-scrollbar-thumb:hover{background:rgba(74,222,128,.8);border:2px solid transparent;background-clip:content-box}
         .sidebar-logo{
             padding:1.25rem 1.5rem;
             display:flex;align-items:center;gap:.6rem;
@@ -127,6 +132,10 @@
         .lang-option:not(.active):hover{color:var(--green-700);transform:scale(1.08)}
         .lang-toggle:has(.lang-option--id:hover,.lang-option--id:focus-visible)::before{transform:translateX(0)}
         .lang-toggle:has(.lang-option--en:hover,.lang-option--en:focus-visible)::before{transform:translateX(100%)}
+        .lang-toggle:has(.lang-option--id:hover,.lang-option--id:focus-visible) .lang-option--id,
+        .lang-toggle:has(.lang-option--en:hover,.lang-option--en:focus-visible) .lang-option--en{color:#fff}
+        .lang-toggle:has(.lang-option--id:hover,.lang-option--id:focus-visible) .lang-option--en.active,
+        .lang-toggle:has(.lang-option--en:hover,.lang-option--en:focus-visible) .lang-option--id.active{color:var(--slate-600)}
         .lang-option:focus-visible{outline:2px solid var(--green-700);outline-offset:3px}
         .admin-avatar{
             width:36px;height:36px;border-radius:50%;
@@ -158,6 +167,60 @@
 
         /* ── TABLE ── */
         .table-card{background:var(--white);border-radius:var(--radius);border:1px solid var(--slate-200);overflow:hidden}
+        .admin-inbox{max-width:1000px;margin:0 auto}
+        .admin-inbox-empty{min-height:17rem;display:grid;justify-items:center;align-content:center;gap:.65rem;margin:1.25rem 0;padding:2rem 1.25rem;text-align:center;background:var(--white);border:1px dashed var(--slate-300);border-radius:.75rem}
+        .admin-inbox-empty-icon{width:3.25rem;height:3.25rem;display:grid;place-items:center;border-radius:50%;background:var(--green-50);color:var(--green-700);font-size:1.2rem}
+        .admin-inbox-empty h2{font-size:1rem;color:var(--slate-800)}
+        .admin-inbox-empty p{max-width:26rem;color:var(--slate-500);font-size:.85rem;line-height:1.6}
+        .admin-conversation-item{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 1.15rem;margin:.65rem 0;background:var(--white);border:1px solid var(--slate-200);border-radius:.65rem;transition:border-color .15s,background .15s}
+        .admin-conversation-item:hover{border-color:var(--green-500);background:var(--green-50)}
+        .admin-conversation-copy,.admin-conversation-meta{display:grid;gap:.2rem;min-width:0}
+        .admin-conversation-copy strong{color:var(--slate-800)}
+        .admin-conversation-copy>span,.admin-conversation-meta{font-size:.8rem;color:var(--slate-500)}
+        .admin-conversation-preview{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:min(65vw,650px)}
+        .admin-conversation-meta{justify-items:end;flex-shrink:0}
+        .admin-conversation-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:.7rem;margin:.65rem 0}
+        .admin-conversation-row .admin-conversation-item{margin:0}
+        .admin-conversation-delete{flex-shrink:0}
+        .admin-chat{max-width:900px;margin:0 auto}
+        .admin-chat-header{margin:1.25rem 0 .75rem}
+        .admin-chat-header h1{font-size:1.2rem}
+        .admin-chat-header p{color:var(--slate-500);font-size:.85rem}
+        .admin-chat-delete{float:right}
+        .admin-chat-log{display:grid;gap:.75rem;max-height:60vh;overflow-y:auto;padding:1rem;background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius)}
+        .admin-chat-message{max-width:min(82%,640px);padding:.8rem .95rem;border:1px solid var(--slate-200);border-radius:.7rem;background:var(--slate-50)}
+        .admin-chat-message--admin{justify-self:end;background:var(--green-50);border-color:var(--green-200)}
+        .admin-chat-sender,.admin-chat-message time{font-size:.75rem;color:var(--slate-500)}
+        .admin-chat-body{margin:.25rem 0;white-space:pre-wrap;overflow-wrap:anywhere}
+        .admin-chat-reply{display:grid;gap:.6rem;margin-top:1rem}
+        .admin-chat-reply textarea{min-height:7rem;resize:vertical}
+        .moderation-page{max-width:1100px;margin:0 auto}
+        .moderation-header{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;margin-bottom:2rem}
+        .moderation-header h1{font-size:1.65rem;color:var(--slate-800)}
+        .moderation-header p{margin-top:.35rem;color:var(--slate-500);font-size:.9rem}
+        .moderation-count{padding:.4rem .7rem;border-radius:999px;background:var(--white);border:1px solid var(--slate-200);font-size:.8rem;color:var(--slate-600);white-space:nowrap}
+        .moderation-section-title{margin:1.25rem 0 .8rem;font-size:1.15rem;color:var(--slate-800)}
+        .moderation-report{margin:.75rem 0;padding:1.1rem 1.2rem;background:var(--white);border:1px solid var(--slate-200);border-radius:.7rem;box-shadow:0 2px 8px rgba(15,23,42,.035)}
+        .moderation-report-header,.moderation-report-tags,.moderation-report-footer,.moderation-actions{display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap}
+        .moderation-report-header{margin-bottom:.9rem}
+        .moderation-report-header time,.moderation-reporter span{font-size:.78rem;color:var(--slate-500)}
+        .moderation-type,.moderation-reason{display:inline-flex;padding:.25rem .6rem;border-radius:999px;background:var(--slate-100);color:var(--slate-700);font-size:.75rem;font-weight:700}
+        .moderation-reason{background:#fff7ed;color:#9a3412}
+        .moderation-content{padding:.85rem 1rem;border-left:3px solid var(--green-500);background:var(--slate-50);border-radius:0 .5rem .5rem 0}
+        .moderation-content>strong{display:block;margin-bottom:.35rem;color:var(--slate-500);font-size:.72rem;text-transform:uppercase}
+        .moderation-content h3{margin:0 0 .35rem;font-size:1rem;color:var(--slate-800)}
+        .moderation-content p,.moderation-details{color:var(--slate-600);font-size:.875rem;line-height:1.6;overflow-wrap:anywhere}
+        .moderation-context-link{display:inline-block;margin-top:.4rem;color:var(--green-700);font-size:.82rem;font-weight:700}
+        .moderation-content-unavailable{padding:.85rem 1rem;background:var(--slate-50);color:var(--slate-500);border-radius:.5rem;font-size:.85rem}
+        .moderation-details{margin-top:.8rem}
+        .moderation-report-footer{margin-top:1rem;padding-top:.85rem;border-top:1px solid var(--slate-100)}
+        .moderation-reporter{display:grid;gap:.12rem;font-size:.82rem;color:var(--slate-700)}
+        .moderation-actions{justify-content:flex-end}
+        .moderation-doctors{margin-top:2.25rem;padding-top:1.25rem;border-top:1px solid var(--slate-200)}
+        .moderation-doctor{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.85rem 1rem;margin:.5rem 0;background:var(--white);border:1px solid var(--slate-200);border-radius:.6rem}
+        .moderation-doctor span{display:grid;gap:.15rem;min-width:0}
+        .moderation-doctor small{color:var(--slate-500);overflow-wrap:anywhere}
+        .moderation-empty{padding:1.2rem;background:var(--white);border:1px dashed var(--slate-300);border-radius:.6rem;color:var(--slate-500)}
         .table-header{
             display:flex;align-items:center;justify-content:space-between;
             padding:1.25rem 1.5rem;border-bottom:1px solid var(--slate-200);gap:1rem;flex-wrap:wrap;
@@ -233,6 +296,15 @@
             .stat-grid{grid-template-columns:1fr 1fr}
             .form-row{grid-template-columns:1fr}
             .admin-content{padding:1.25rem}
+            .admin-conversation-preview{max-width:55vw}
+            .admin-chat-message{max-width:95%}
+            .moderation-header{align-items:flex-start;flex-direction:column}
+            .moderation-report-footer{align-items:flex-start;flex-direction:column}
+            .moderation-actions,.moderation-actions form,.moderation-actions .btn{width:100%}
+            .moderation-doctor{align-items:flex-start;flex-direction:column}
+            .moderation-doctor .btn{width:100%;justify-content:center}
+            .admin-conversation-row{grid-template-columns:minmax(0,1fr);}
+            .admin-conversation-delete .btn{width:100%;justify-content:center}
         }
         @media(max-width:480px){.stat-grid{grid-template-columns:1fr}}
         @media(prefers-reduced-motion:reduce){
@@ -283,6 +355,14 @@
             <i class="fas fa-book-medical"></i> Panduan Kesehatan
         </a>
 
+        <p class="nav-section-label">Layanan pengguna</p>
+        <a href="{{ route('admin.community.moderation') }}" class="nav-item {{ request()->routeIs('admin.community.*') ? 'active' : '' }}">
+            <i class="fas fa-flag"></i> {{ __('app.community_moderation') }}
+        </a>
+        <a href="{{ route('admin.consultations.index') }}" class="nav-item {{ request()->routeIs('admin.consultations.*') ? 'active' : '' }}">
+            <i class="fas fa-comments"></i> {{ __('app.consultation_inbox') }}
+        </a>
+
         <p class="nav-section-label">Lainnya</p>
         <a href="{{ route('admin.profile.index') }}" class="nav-item {{ request()->routeIs('admin.profile.*') ? 'active' : '' }}">
             <i class="fas fa-user"></i> Profil Saya
@@ -315,11 +395,13 @@
             <div class="lang-switcher" role="group" aria-label="{{ __('app.language') }}">
                 <i class="fas fa-globe"></i>
                 <div class="lang-toggle" data-locale="{{ app()->getLocale() }}">
-                    <a href="{{ route('lang.switch', 'id') }}"
+                    <a href="#"
                        class="lang-option lang-option--id {{ app()->getLocale() === 'id' ? 'active' : '' }}"
+                       data-locale="id" data-locale-update="{{ route('lang.switch', 'id') }}"
                        aria-current="{{ app()->getLocale() === 'id' ? 'true' : 'false' }}">ID</a>
-                    <a href="{{ route('lang.switch', 'en') }}"
+                    <a href="#"
                        class="lang-option lang-option--en {{ app()->getLocale() === 'en' ? 'active' : '' }}"
+                       data-locale="en" data-locale-update="{{ route('lang.switch', 'en') }}"
                        aria-current="{{ app()->getLocale() === 'en' ? 'true' : 'false' }}">EN</a>
                 </div>
             </div>
@@ -353,12 +435,155 @@
     const sidebar = document.getElementById('adminSidebar');
     if(toggle) toggle.addEventListener('click', () => sidebar.classList.toggle('open'));
 
-    // Delete confirmation
-    document.querySelectorAll('.btn-delete-confirm').forEach(btn => {
-        btn.addEventListener('click', function(e){
-            if(!confirm('{{ __("admin.confirm_delete") }}')) e.preventDefault();
+    document.addEventListener('click', event => {
+        const button = event.target.closest('.btn-delete-confirm');
+        if (button && !window.confirm(button.dataset.confirm || '{{ __('admin.confirm_delete') }}')) {
+            event.preventDefault();
+        }
+    });
+
+    document.querySelectorAll('a[data-locale-update]').forEach(link => {
+        link.addEventListener('click', async event => {
+            event.preventDefault();
+            const token = document.querySelector('meta[name="csrf-token"]')?.content || '';
+            const response = await fetch(link.dataset.localeUpdate, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': token,
+                },
+                body: '{}',
+                credentials: 'same-origin',
+            });
+            if (response.ok) window.location.reload();
         });
     });
+
+    const consultationLog = document.querySelector('[data-admin-chat-log]');
+    if (consultationLog) {
+        window.setInterval(async () => {
+            if (document.visibilityState !== 'visible') return;
+            const after = Number(consultationLog.dataset.lastMessageId || 0);
+            try {
+                const response = await fetch(`${consultationLog.dataset.messagesUrl}?after=${after}`, {
+                    headers: { Accept: 'application/json' },
+                    cache: 'no-store',
+                });
+                if (!response.ok) return;
+                const data = await response.json();
+                if (data.reset) {
+                    consultationLog.replaceChildren();
+                    consultationLog.dataset.lastMessageId = '0';
+                }
+                if (!data.messages?.length && data.reset) {
+                    const empty = document.createElement('p');
+                    empty.textContent = consultationLog.dataset.emptyLabel;
+                    consultationLog.append(empty);
+                }
+                for (const message of data.messages || []) {
+                    const article = document.createElement('article');
+                    article.className = `admin-chat-message admin-chat-message--${message.sender}`;
+                    article.dataset.messageId = String(message.id);
+                    const sender = document.createElement('p');
+                    sender.className = 'admin-chat-sender';
+                    sender.textContent = message.sender_name;
+                    const body = document.createElement('p');
+                    body.className = 'admin-chat-body';
+                    body.textContent = message.message;
+                    article.append(sender, body);
+                    consultationLog.append(article);
+                    consultationLog.dataset.lastMessageId = String(message.id);
+                }
+                consultationLog.scrollTop = consultationLog.scrollHeight;
+            } catch (error) {
+                console.error('Unable to check consultation messages.', error);
+            }
+        }, 1000);
+    }
+
+    const consultationInbox = document.querySelector('[data-admin-inbox]');
+    if (consultationInbox) {
+        window.setInterval(async () => {
+            if (document.visibilityState !== 'visible') return;
+            const after = Number(consultationInbox.dataset.lastMessageId || 0);
+            try {
+                const response = await fetch(`${consultationInbox.dataset.updatesUrl}?after=${after}`, {
+                    headers: { Accept: 'application/json' },
+                    cache: 'no-store',
+                });
+                if (!response.ok) return;
+                const data = await response.json();
+                for (const message of data.messages || []) {
+                    const userId = String(message.user.id);
+                    let row = consultationInbox.querySelector(`[data-user-id="${userId}"]`);
+                    if (!row) {
+                        row = document.createElement('div');
+                        row.className = 'admin-conversation-row';
+                        row.dataset.userId = userId;
+                    }
+
+                    const link = document.createElement('a');
+                    link.className = 'admin-conversation-item';
+                    link.href = message.show_url;
+                    const copy = document.createElement('span');
+                    copy.className = 'admin-conversation-copy';
+                    const name = document.createElement('strong');
+                    name.textContent = message.user.name;
+                    const email = document.createElement('span');
+                    email.textContent = message.user.email;
+                    const preview = document.createElement('span');
+                    preview.className = 'admin-conversation-preview';
+                    preview.textContent = message.message;
+                    copy.append(name, email, preview);
+                    const meta = document.createElement('span');
+                    meta.className = 'admin-conversation-meta';
+                    const time = document.createElement('time');
+                    time.textContent = message.created_at;
+                    meta.append(time);
+                    if (message.awaiting_reply) {
+                        const badge = document.createElement('span');
+                        badge.className = 'badge badge-red';
+                        badge.textContent = '{{ __('app.consultation_unanswered') }}';
+                        meta.append(badge);
+                    }
+                    link.append(copy, meta);
+
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = message.delete_url;
+                    form.className = 'admin-conversation-delete';
+                    const token = document.createElement('input');
+                    token.type = 'hidden';
+                    token.name = '_token';
+                    token.value = consultationInbox.dataset.csrf;
+                    const method = document.createElement('input');
+                    method.type = 'hidden';
+                    method.name = '_method';
+                    method.value = 'DELETE';
+                    const remove = document.createElement('button');
+                    remove.type = 'submit';
+                    remove.className = 'btn btn-sm btn-danger btn-delete-confirm';
+                    remove.dataset.confirm = consultationInbox.dataset.deleteConfirm;
+                    remove.setAttribute('aria-label', `${consultationInbox.dataset.deleteLabel} ${message.user.name}`);
+                    const icon = document.createElement('i');
+                    icon.className = 'fas fa-trash';
+                    icon.setAttribute('aria-hidden', 'true');
+                    const label = document.createElement('span');
+                    label.textContent = consultationInbox.dataset.deleteLabel;
+                    remove.append(icon, label);
+                    form.append(token, method, remove);
+                    row.replaceChildren(link, form);
+                    consultationInbox.querySelector('[data-inbox-empty]')?.remove();
+                    consultationInbox.prepend(row);
+                }
+                consultationInbox.dataset.lastMessageId = String(Math.max(after, Number(data.latest_message_id || 0)));
+            } catch (error) {
+                console.error('Unable to refresh consultation inbox.', error);
+            }
+        }, 2000);
+    }
 </script>
 @stack('scripts')
 </body>

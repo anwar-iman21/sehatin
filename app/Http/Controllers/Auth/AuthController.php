@@ -61,7 +61,7 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255', 'regex:/^\\S+(?:\\s+\\S+)?$/u'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', Password::defaults()],
             'password_confirmation' => ['required', 'same:password'],
@@ -69,6 +69,7 @@ class AuthController extends Controller
             'name.required' => __('auth.validation.name_required'),
             'name.string' => __('auth.validation.name_string'),
             'name.max' => __('auth.validation.name_max'),
+            'name.regex' => __('app.name_two_words_hint'),
             'email.required' => __('auth.validation.email_required'),
             'email.string' => __('auth.validation.email_string'),
             'email.email' => __('auth.validation.email_invalid'),

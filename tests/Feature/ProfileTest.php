@@ -33,6 +33,20 @@ class ProfileTest extends TestCase
         Storage::disk('public')->assertMissing('avatars/old.jpg');
     }
 
+    public function test_user_name_is_limited_to_two_words_and_the_profile_explains_the_limit(): void
+    {
+        $user = User::factory()->create(['name' => 'Nama Lama']);
+        $this->actingAs($user)
+            ->get(route('profile.edit'))
+            ->assertOk()
+            ->assertSee(__('app.name_two_words_hint'));
+
+        $this->put(route('profile.update'), ['name' => 'Nama Terlalu Panjang'])
+            ->assertSessionHasErrors('name');
+
+        $this->assertSame('Nama Lama', $user->fresh()->name);
+    }
+
     public function test_user_can_change_password_only_with_the_correct_current_password(): void
     {
         $user = User::factory()->create(['password' => Hash::make('old-password')]);
@@ -91,7 +105,12 @@ class ProfileTest extends TestCase
             ->assertSeeHtml('class="lang-option lang-option--id active"')
             ->assertSeeHtml('class="btn btn-sm btn-danger"')
             ->assertSeeHtml('fas fa-globe');
-        $this->get(route('admin.profile.edit'))->assertOk();
+        $this->get(route('admin.profile.edit'))
+            ->assertOk()
+            ->assertSee(__('app.name_two_words_hint'));
+
+        $this->put(route('admin.profile.update'), ['name' => 'Admin Terlalu Panjang'])
+            ->assertSessionHasErrors('name');
 
         $this->put(route('admin.profile.update'), ['name' => 'Admin Baru'])
             ->assertRedirect(route('admin.profile.index'));

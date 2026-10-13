@@ -18,7 +18,8 @@
         @method('PUT')
         <div class="form-group">
             <label class="form-label" for="name">Nama</label>
-            <input id="name" type="text" name="name" class="form-control" value="{{ old('name', $user->name) }}" maxlength="255" required>
+            <input id="name" type="text" name="name" class="form-control" value="{{ old('name', $user->name) }}" maxlength="255" pattern="\S+(?:\s+\S+)?" title="{{ __('app.name_two_words_hint') }}" required>
+            <p class="form-hint">{{ __('app.name_two_words_hint') }}</p>
         </div>
         <div class="form-group">
             <label class="form-label" for="avatar">Avatar</label>

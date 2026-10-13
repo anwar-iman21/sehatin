@@ -25,6 +25,10 @@ return [
     'create_account' => 'Create New Account',
     'login_subtitle' => 'Sign in to access the SEHATIN health portal',
     'register_subtitle' => 'Join SEHATIN for full access to health information',
+    'name_placeholder' => 'Your full name',
+    'email_placeholder' => 'name@example.com',
+    'password_placeholder' => 'At least 8 characters',
+    'password_confirmation_placeholder' => 'Enter your password again',
     'session_expired' => 'Your registration form session expired. Your name and email have been kept; review them and click Register again.',
     'session_refresh_failed' => 'The form session could not be refreshed. Check your internet connection and try clicking Register again.',
     'validation' => [

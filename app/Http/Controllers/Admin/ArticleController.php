@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Category;
+use App\Support\HtmlSanitizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -34,6 +35,8 @@ class ArticleController extends Controller
             'thumbnail'        => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'status'           => ['required', 'in:draft,published'],
         ]);
+
+        $validated['content'] = HtmlSanitizer::clean($validated['content']);
 
         $validated['user_id'] = auth()->id();
         $validated['slug']    = Str::slug($validated['title']);
@@ -76,6 +79,8 @@ class ArticleController extends Controller
             'thumbnail'        => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'status'           => ['required', 'in:draft,published'],
         ]);
+
+        $validated['content'] = HtmlSanitizer::clean($validated['content']);
 
         if ($request->hasFile('thumbnail')) {
             if ($artikel->thumbnail) {

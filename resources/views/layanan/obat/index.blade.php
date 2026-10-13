@@ -11,10 +11,10 @@
 
 <section class="section">
     <div class="section-inner">
-        <form method="GET" action="{{ route('obat.index') }}" style="display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1.25rem">
+        <form method="GET" action="{{ route('obat.index') }}" class="drug-filters">
             <label for="drug-search" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">Cari nama obat</label>
-            <input id="drug-search" type="search" name="q" value="{{ $search }}" placeholder="Cari nama obat..." style="flex:1;min-width:220px;padding:.75rem 1rem;border:1px solid var(--slate-200);border-radius:.6rem;font:inherit">
-            <select name="category" aria-label="Kategori obat" style="min-width:190px;padding:.75rem 1rem;border:1px solid var(--slate-200);border-radius:.6rem;background:white;color:var(--slate-700);font:inherit">
+            <input id="drug-search" class="drug-search" type="search" name="q" value="{{ $search }}" placeholder="Cari nama obat...">
+            <select name="category" class="filter-select" aria-label="Kategori obat">
                 <option value="">Semua kategori</option>
                 <option value="resep" @selected($category === 'resep')>Obat resep</option>
                 <option value="bebas" @selected($category === 'bebas')>Obat bebas</option>
@@ -25,7 +25,7 @@
             @if($search || $category || $letter)<a class="btn btn-outline" href="{{ route('obat.index') }}">Reset</a>@endif
         </form>
 
-        <div style="display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;margin-bottom:1.5rem" aria-label="Filter huruf nama obat">
+        <div class="drug-alphabet" aria-label="Filter huruf nama obat">
             <a href="{{ route('obat.index', array_filter(['q' => $search, 'category' => $category])) }}" class="btn btn-sm {{ $letter === '' ? 'btn-primary' : 'btn-outline' }}">Semua</a>
             @foreach(range('A', 'Z') as $alphabet)
                 <a href="{{ route('obat.index', array_filter(['q' => $search, 'category' => $category, 'letter' => $alphabet])) }}" class="btn btn-sm {{ $letter === $alphabet ? 'btn-primary' : 'btn-outline' }}">{{ $alphabet }}</a>

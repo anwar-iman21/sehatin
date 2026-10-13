@@ -29,6 +29,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_verified_doctor' => 'boolean',
         ];
     }
 
@@ -40,5 +41,25 @@ class User extends Authenticatable
     public function articles()
     {
         return $this->hasMany(Article::class);
+    }
+
+    public function bookmarkedArticles()
+    {
+        return $this->belongsToMany(Article::class, 'article_bookmarks')->withTimestamps();
+    }
+
+    public function searchHistories()
+    {
+        return $this->hasMany(SearchHistory::class);
+    }
+
+    public function communityThreads()
+    {
+        return $this->hasMany(CommunityThread::class);
+    }
+
+    public function consultationMessages()
+    {
+        return $this->hasMany(ConsultationMessage::class);
     }
 }

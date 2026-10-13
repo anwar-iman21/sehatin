@@ -77,6 +77,22 @@ class AuthRegistrationTest extends TestCase
             ->assertSee('id="password-error"', false);
     }
 
+    public function test_registration_rejects_names_with_more_than_two_words(): void
+    {
+        $this->withSession(['locale' => 'id'])
+            ->from(route('register'))
+            ->post(route('register'), [
+                'name' => 'Nama Pengguna Baru',
+                'email' => 'baru@example.com',
+                'password' => 'password123',
+                'password_confirmation' => 'password123',
+            ])
+            ->assertRedirect(route('register'))
+            ->assertSessionHasErrors('name');
+
+        $this->assertDatabaseMissing('users', ['email' => 'baru@example.com']);
+    }
+
     public function test_user_can_register_with_matching_password_confirmation(): void
     {
         $this->withSession(['registration_probe' => true]);
